@@ -5,6 +5,7 @@ import collections
 import logging
 import re
 import time
+import weakref
 from pythonosc import osc_packet
 from typing import overload, List, Union, Any, Generator, Tuple, Callable, Optional, DefaultDict
 from pythonosc.osc_message import OscMessage
@@ -26,7 +27,7 @@ class Handler(object):
             _args: Message causing invocation
             _needs_reply_address Whether the client's ip address shall be passed as an argument or not
        """
-        self.callback = _callback
+        self.callback = weakref.WeakMethod(_callback)
         self.args = _args
         self.needs_reply_address = _needs_reply_address
 
