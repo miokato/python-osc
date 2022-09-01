@@ -27,7 +27,7 @@ class Handler(object):
             _args: Message causing invocation
             _needs_reply_address Whether the client's ip address shall be passed as an argument or not
        """
-        self.callback = weakref.WeakMethod(_callback)
+        self.callback = _callback
         self.args = _args
         self.needs_reply_address = _needs_reply_address
 
@@ -93,7 +93,8 @@ class Dispatcher(object):
         # TODO: Check the spec:
         # http://opensoundcontrol.org/spec-1_0
         # regarding multiple mappings
-        handlerobj = Handler(handler, list(args), needs_reply_address)
+        _handler = weakref.ref(handler)
+        handlerobj = Handler(_handler, list(args), needs_reply_address)
         self._map[address].append(handlerobj)
         return handlerobj
 
